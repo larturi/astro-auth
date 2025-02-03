@@ -12,9 +12,24 @@
       <li class='font-semibold text-gray-700'>
         <a href='/login'>Login</a>
       </li>
-      <li class='font-semibold text-gray-700'>
+      <li id='logout' class='font-semibold text-gray-700'>
         <a href='#'>Salir</a>
       </li>
     </ul>
   </div>
 </nav>
+
+<script>
+  import { actions } from 'astro:actions'
+
+  const logoutElement = document.querySelector('#logout') as HTMLLIElement
+
+  if (!logoutElement) {
+    throw new Error('Element not found')
+  }
+
+  logoutElement.addEventListener('click', () => {
+    actions.logoutUser()
+    window.location.href = '/login'
+  })
+</script>
