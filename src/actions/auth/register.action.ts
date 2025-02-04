@@ -1,7 +1,12 @@
 import { firebase } from '@/firebase/config'
 import { z } from 'astro/zod'
 import { defineAction } from 'astro:actions'
-import { createUserWithEmailAndPassword, type AuthError } from 'firebase/auth'
+import {
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+  updateProfile,
+  type AuthError
+} from 'firebase/auth'
 
 export const registerUser = defineAction({
   accept: 'form',
@@ -27,6 +32,22 @@ export const registerUser = defineAction({
     // Firebase create user logic
     try {
       await createUserWithEmailAndPassword(firebase.auth, email, password)
+
+      if (!firebase.auth.currentUser) {
+        throw new Error('Error creating user in Firebase')
+      }
+
+      // Actualizar el nombre del usuario
+      await updateProfile(firebase.auth.currentUser, {
+        displayName: name
+      })
+
+      // Enviar correo de verificación
+      await sendEmailVerification(firebase.auth.currentUser, {
+        url: 'http://localhost:4321/protected?emailVerified=true'
+      })
+
+      return { ok: true, message: 'User registered' }
     } catch (error) {
       const firebaseError = error as AuthError
 
@@ -35,7 +56,5 @@ export const registerUser = defineAction({
       }
       throw new Error('Error creating user in Firebase')
     }
-
-    return { ok: true, message: 'User registered' }
   }
 })
