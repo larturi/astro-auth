@@ -6,12 +6,12 @@ import { getAuth } from 'firebase/auth'
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: 'AIzaSyAtdK8SNH12bmigHD0-zpyHDuHvTpsgcn4',
-  authDomain: 'astro-auth-udemy.firebaseapp.com',
-  projectId: 'astro-auth-udemy',
-  storageBucket: 'astro-auth-udemy.firebasestorage.app',
-  messagingSenderId: '827464083413',
-  appId: '1:827464083413:web:566662fa17d4afd8e4bf5c'
+  apiKey: import.meta.env.PUBLIC_API_KEY,
+  authDomain: import.meta.env.PUBLIC_AUTH_DOMAIN,
+  projectId: import.meta.env.PUBLIC_PROJECT_ID,
+  storageBucket: import.meta.env.PUBLIC_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.PUBLIC_MESSAGING_SENDER_ID,
+  appId: import.meta.env.PUBLIC_APP_ID
 }
 
 // Initialize Firebase

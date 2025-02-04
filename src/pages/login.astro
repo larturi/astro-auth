@@ -99,9 +99,6 @@ const rememberMe = !!email
 
     const { data, error } = await actions.loginUser(formData)
 
-    console.log(error)
-    console.log(data)
-
     if (error) {
       Swal.fire({
         icon: 'error',
