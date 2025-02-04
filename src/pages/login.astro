@@ -75,9 +75,9 @@ const rememberMe = !!email
         <button
           type='button'
           id='btn-google'
-          class='w-full flex justify-center bg-blue-400 hover:bg-blue-500
+          class='w-full flex justify-center bg-blue-500
                text-gray-100 p-3 rounded-full tracking-wide font-semibold shadow-lg
-                 cursor-pointer transition ease-in duration-500'
+                 cursor-pointer transition ease-in duration-500 disabled:opacity-50'
         >
           Ingresar con Google
         </button>
@@ -131,7 +131,7 @@ const rememberMe = !!email
   })
 
   btnGoogle.addEventListener('click', async () => {
-    btnSubmit.setAttribute('disabled', 'disabled')
+    btnGoogle.setAttribute('disabled', 'disabled')
 
     const provider = new GoogleAuthProvider()
 
@@ -164,6 +164,6 @@ const rememberMe = !!email
       console.log(error)
     }
 
-    btnSubmit.removeAttribute('disabled')
+    btnGoogle.removeAttribute('disabled')
   })
 </script>

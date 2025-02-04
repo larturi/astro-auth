@@ -1,4 +1,5 @@
 /// <reference types="astro/client" />
+
 interface ImportMetaEnv {
   readonly PUBLIC_API_KEY: string
   readonly PUBLIC_AUTH_DOMAIN: string
@@ -10,4 +11,18 @@ interface ImportMetaEnv {
 
 interface ImportMeta {
   readonly env: ImportMetaEnv
+}
+
+interface User {
+  email: string
+  name: string
+  avatar: string
+  emailVerified: boolean
+}
+
+declare namespace App {
+  interface Locals {
+    isLoggedIn: boolean
+    user: User | null
+  }
 }
