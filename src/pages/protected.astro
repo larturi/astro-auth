@@ -25,7 +25,7 @@ const userName = displayName ?? 'No display name'
         photoURL ? (
           <img
             class='w-32 mx-auto rounded-full -mt-20 border-8 border-white'
-            src={photoURL}
+            src={photoURL.trim()}
             alt='Foto de perfil'
           />
         ) : (

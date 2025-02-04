@@ -67,29 +67,47 @@ const rememberMe = !!email
             Ingresar
           </button>
         </div>
-      </form>
-      <div class='pt-5 text-center text-gray-400 text-xs'>
-        <span>
-          Copyright © {new Date().getFullYear()}
-          <a
-            href='https://codepen.io/uidesignhub'
-            rel=''
-            target='_blank'
-            title='Ajimon'
-            class='text-green hover:text-green-500'>AJI</a
-          ></span
+
+        <div class='flex flex-1 w-full my-3'>
+          <div class='w-full border-t-2 border-gray-300'></div>
+        </div>
+
+        <button
+          type='button'
+          id='btn-google'
+          class='w-full flex justify-center bg-blue-400 hover:bg-blue-500
+               text-gray-100 p-3 rounded-full tracking-wide font-semibold shadow-lg
+                 cursor-pointer transition ease-in duration-500'
         >
-      </div>
+          Ingresar con Google
+        </button>
+      </form>
+    </div>
+    <div class='pt-5 text-center text-gray-400 text-xs'>
+      <span>
+        Copyright © {new Date().getFullYear()}
+        <a
+          href='https://codepen.io/uidesignhub'
+          rel=''
+          target='_blank'
+          title='Ajimon'
+          class='text-green hover:text-green-500'>AJI</a
+        ></span
+      >
     </div>
   </div>
 </AuthLayout>
 
 <script>
+  import { firebase } from '@/firebase/config'
   import { actions } from 'astro:actions'
+  import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth'
   import Swal from 'sweetalert2'
 
   const form = document.querySelector('form') as HTMLFormElement
   const btnSubmit = document.querySelector('#btn-submit') as HTMLButtonElement
+
+  const btnGoogle = document.querySelector('#btn-google') as HTMLButtonElement
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault()
@@ -110,5 +128,42 @@ const rememberMe = !!email
     }
 
     window.location.replace('/protected')
+  })
+
+  btnGoogle.addEventListener('click', async () => {
+    btnSubmit.setAttribute('disabled', 'disabled')
+
+    const provider = new GoogleAuthProvider()
+
+    try {
+      // Obtener las credenciales del lado del cliente
+      const credentials = await signInWithPopup(firebase.auth, provider)
+
+      // Verificar las credenciales en el servidor
+      const { error } = await actions.loginGoogle(credentials)
+
+      if (error) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Credenciales no son correctas',
+          text: error.message
+        })
+        btnSubmit.removeAttribute('disabled')
+        return
+      }
+
+      btnGoogle.innerText = 'Ingresando...'
+      window.location.replace('/protected')
+    } catch (error) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Credenciales no son correctas',
+        text: 'Error al iniciar sesión con Google'
+      })
+      btnSubmit.removeAttribute('disabled')
+      console.log(error)
+    }
+
+    btnSubmit.removeAttribute('disabled')
   })
 </script>
