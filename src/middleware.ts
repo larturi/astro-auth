@@ -1,7 +1,6 @@
-import type { MiddlewareNext } from 'astro'
 import { firebase } from './firebase/config'
 
-const privateRoutes = ['/protected']
+const privateRoutes = ['/', '/protected']
 const publicRoutes = ['/login', '/register']
 
 export const onRequest = async (
